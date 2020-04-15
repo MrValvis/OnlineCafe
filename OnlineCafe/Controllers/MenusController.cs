@@ -14,8 +14,18 @@ namespace OnlineCafe.Controllers
 
         [HttpGet]
         public IHttpActionResult Menus() {
-            var menus = cafeapicontext.Menus;
+            var menus = cafeapicontext.Menus.Include("Submenus");
             return Ok(menus);
+        }
+
+        [HttpGet]
+        public IHttpActionResult Menu(int id) {
+            var menu = cafeapicontext.Menus.Include("Submenus").FirstOrDefault(m=>m.Id==id);
+            if (menu == null)
+            {
+                return NotFound();
+            }
+            return Ok(menu);
         }
     }
 }
